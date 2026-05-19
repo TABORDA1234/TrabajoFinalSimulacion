@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulador de Rutas - Colombia Comparte</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/static/css/style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar">
+        <div class="logo">
+          <div class="logo-icon"></div>
+          <h2>Colombia Comparte</h2>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="#config-section" class="active">Configuración</a></li>
+            <li><a href="#states-section">Estados</a></li>
+            <li><a href="#paths-section">Recorridos</a></li>
+            <li><a href="#matrix-section">Matrices</a></li>
+            <li><a href="#results-section">Resultados</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="content">
+        <header class="top-bar">
+          <h1>Panel de Simulación de Usuarios</h1>
+          <p>Modelo Basado en Cadenas de Markov</p>
+        </header>
+
+        <!-- Configuration Section -->
+        <section id="config-section" class="glass-card">
+          <h2>Configuración de la Simulación</h2>
+          <div class="config-form">
+            <div class="input-group">
+              <label for="num-users">Número de usuarios a simular</label>
+              <input
+                type="number"
+                id="num-users"
+                value="1000"
+                min="1"
+                max="100000"
+              />
+            </div>
+            <div class="input-group">
+              <label for="max-steps">Número máximo de pasos</label>
+              <input
+                type="number"
+                id="max-steps"
+                value="20"
+                min="1"
+                max="100"
+              />
+            </div>
+            <button id="btn-simulate" class="primary-btn">
+              <span>Ejecutar Simulación</span>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            </button>
+          </div>
+        </section>
+
+        <!-- Results Section (Hidden until simulation is run) -->
+        <section id="results-section" class="glass-card hidden">
+          <h2>Resultados de Simulación</h2>
+
+          <div class="metrics-grid">
+            <div class="metric-card success">
+              <h3>Éxito</h3>
+              <div class="value" id="val-success">0%</div>
+            </div>
+            <div class="metric-card warning">
+              <h3>Abandono</h3>
+              <div class="value" id="val-abandon">0%</div>
+            </div>
+            <div class="metric-card danger">
+              <h3>Error</h3>
+              <div class="value" id="val-error">0%</div>
+            </div>
+            <div class="metric-card info">
+              <h3>Pendiente</h3>
+              <div class="value" id="val-pending">0%</div>
+            </div>
+            <div class="metric-card neutral">
+              <h3>Promedio Pasos</h3>
+              <div class="value" id="val-steps">0</div>
+            </div>
+          </div>
+
+          <div class="chart-container">
+            <canvas id="resultsChart"></canvas>
+          </div>
+
+          <!-- Critical State & AI Suggestion -->
+          <div class="critical-insights">
+            <div class="insight-header">
+              <h3><span class="pulse-dot"></span> Estado Crítico Detectado</h3>
+            </div>
+            <div class="insight-content">
+              <div class="critical-state-badge">
+                <span id="cs-code">S0</span>
+                <span id="cs-name">Cargando...</span>
+              </div>
+              <p class="risk-info">
+                Riesgo de abandono/error: <strong id="cs-prob">0%</strong>
+              </p>
+              <div class="recommendation-box">
+                <h4>💡 Recomendación Estratégica:</h4>
+                <p id="cs-suggestion">Generando recomendación...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preview Users -->
+          <div class="preview-users">
+            <h3>Vista Previa de Usuarios Simulados</h3>
+            <div class="table-responsive">
+              <table id="preview-table">
+                <thead>
+                  <tr>
+                    <th>Usuario ID</th>
+                    <th>Recorrido</th>
+                    <th>Estado Final</th>
+                    <th>Resultado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- JS Injected -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- States Section -->
+        <section id="states-section" class="glass-card">
+          <h2>Catálogo de Estados</h2>
+          <div class="table-responsive max-height-table">
+            <table id="states-table">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Nombre</th>
+                  <th>Descripción</th>
+                  <th>Tipo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- JS Injected -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Paths Section -->
+        <section id="paths-section" class="glass-card">
+          <h2>Recorridos Base (Ejemplos Reales)</h2>
+          <div class="paths-container" id="paths-container">
+            <!-- JS Injected -->
+          </div>
+        </section>
+
+        <!-- Matrix Section -->
+        <section id="matrix-section" class="glass-card">
+          <h2>Matrices de Transición</h2>
+          <div class="matrix-tabs">
+            <button class="tab-btn active" data-target="mat-counts">
+              Matriz de Conteos
+            </button>
+            <button class="tab-btn" data-target="mat-prob">
+              Matriz de Probabilidades
+            </button>
+          </div>
+
+          <div class="tab-content active" id="mat-counts">
+            <div class="table-responsive max-height-table matrix-wrapper">
+              <table id="table-mat-counts" class="matrix-table">
+                <!-- JS Injected -->
+              </table>
+            </div>
+          </div>
+
+          <div class="tab-content" id="mat-prob">
+            <div class="table-responsive max-height-table matrix-wrapper">
+              <table id="table-mat-prob" class="matrix-table">
+                <!-- JS Injected -->
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="/static/js/main.js"></script>
+  </body>
+</html>
