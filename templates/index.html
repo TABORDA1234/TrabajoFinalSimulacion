@@ -20,7 +20,23 @@
       <!-- Sidebar Navigation -->
       <aside class="sidebar">
         <div class="logo">
-          <div class="logo-icon"></div>
+          <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="36" height="36" rx="10" fill="url(#logoGrad)"/>
+            <circle cx="18" cy="8" r="3.5" fill="white" fill-opacity="0.95"/>
+            <circle cx="8" cy="24" r="3" fill="white" fill-opacity="0.8"/>
+            <circle cx="28" cy="24" r="3" fill="white" fill-opacity="0.8"/>
+            <circle cx="18" cy="30" r="2.5" fill="white" fill-opacity="0.6"/>
+            <line x1="18" y1="11.5" x2="8" y2="21" stroke="white" stroke-opacity="0.5" stroke-width="1.2"/>
+            <line x1="18" y1="11.5" x2="28" y2="21" stroke="white" stroke-opacity="0.5" stroke-width="1.2"/>
+            <line x1="8" y1="27" x2="18" y2="27.5" stroke="white" stroke-opacity="0.4" stroke-width="1"/>
+            <line x1="28" y1="27" x2="18" y2="27.5" stroke="white" stroke-opacity="0.4" stroke-width="1"/>
+            <defs>
+              <linearGradient id="logoGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#4f8eff"/>
+                <stop offset="1" stop-color="#a855f7"/>
+              </linearGradient>
+            </defs>
+          </svg>
           <h2>Colombia Comparte</h2>
         </div>
         <nav>
@@ -30,8 +46,10 @@
             <li><a href="#paths-section">Recorridos</a></li>
             <li><a href="#matrix-section">Matrices</a></li>
             <li><a href="#results-section">Resultados</a></li>
+            <li><a href="#flow-simulator-section" class="nav-flow-link">✦ Mapa de Flujo</a></li>
           </ul>
         </nav>
+
       </aside>
 
       <!-- Main Content -->
@@ -83,7 +101,123 @@
           </div>
         </section>
 
+        <!-- Interactive Flow Map Simulator Section (New) -->
+        <section id="flow-simulator-section" class="glass-card hidden">
+          <h2>Mapa de Flujo e Interacción de Usuarios</h2>
+
+          <!-- Live KPIs Strip -->
+          <div class="metrics-grid">
+            <div class="metric-card neutral">
+              <h3>Simulaciones</h3>
+              <div class="value" id="live-val-sims">0</div>
+            </div>
+            <div class="metric-card success">
+              <h3>Tasa de Conversión</h3>
+              <div class="value" id="live-val-success">0%</div>
+            </div>
+            <div class="metric-card danger">
+              <h3>Tasa de Abandono (S34)</h3>
+              <div class="value" id="live-val-abandon">0%</div>
+            </div>
+            <div class="metric-card info">
+              <h3>Pasos Promedio</h3>
+              <div class="value" id="live-val-steps">0</div>
+            </div>
+          </div>
+
+          <!-- Main Flow Grid -->
+          <div class="flow-simulator-grid">
+            <!-- Left Side: Flow Canvas -->
+            <div class="flow-card-wrap">
+              <div class="flow-card-header">
+                <h3>Esquema de Transiciones</h3>
+                <div class="flow-legend">
+                  <div class="legend-item"><div class="legend-dot" style="background:#f0a500"></div>Inicio</div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#ff9944"></div>Edifica</div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#b388ff"></div>Contacto</div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#00d4ff"></div>Institucional</div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div>Aula/Éxito</div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div>Error</div>
+                </div>
+              </div>
+              <div class="canvas-container">
+                <canvas id="flow-canvas"></canvas>
+              </div>
+              <div class="sim-status-bar" id="live-sim-status">
+                Estado: <b>Listo — Datos del modelo Markov cargados</b>
+              </div>
+            </div>
+
+            <!-- Right Side: Panel Controls and Logs -->
+            <div class="simulator-panels">
+              <!-- Current Path Panel -->
+              <div class="sim-panel-card">
+                <div class="sim-panel-title">Recorrido en Vivo</div>
+                <div class="live-path-chips" id="live-chips">
+                  <span style="font-size:11px;color:var(--text-secondary)">Pulsa "Simular usuario" para iniciar</span>
+                </div>
+                <div class="live-final-badge-wrap" id="live-final-badge"></div>
+                <div class="live-path-meta">
+                  <span>Pasos: <strong id="live-path-steps">–</strong></span>
+                  <span>Simulación: <strong id="live-sim-num">–</strong></span>
+                </div>
+              </div>
+
+              <!-- Top Results Accumulator -->
+              <div class="sim-panel-card">
+                <div class="sim-panel-title">Resultados de Simulación</div>
+                <div class="sim-res-list" id="live-res-list">
+                  <!-- JS Injected -->
+                </div>
+              </div>
+
+              <!-- Real-time Live Log -->
+              <div class="sim-panel-card">
+                <div class="sim-panel-title">Historial en Vivo</div>
+                <div class="live-log-scroll" id="live-log-scroll">
+                  <!-- JS Injected -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Control Bar -->
+          <div class="flow-controls-bar">
+            <button class="sim-btn sim-btn-primary" id="live-btn-go">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Simular usuario</span>
+            </button>
+            <button class="sim-btn sim-btn-secondary" id="live-btn-batch">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              <span>Correr 10 seguidas</span>
+            </button>
+            <button class="sim-btn sim-btn-reset" id="live-btn-reset">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+              <span>Reiniciar</span>
+            </button>
+            
+            <div class="sim-speed-selector">
+              <span>Velocidad:</span>
+              <div class="speed-dropdown" id="speed-dropdown">
+                <button class="speed-dropdown-btn" id="speed-dropdown-btn">
+                  <span id="speed-current-label">1x</span>
+                  <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+                    <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <div class="speed-dropdown-menu" id="speed-dropdown-menu">
+                  <div class="speed-option" data-value="500">0.5x</div>
+                  <div class="speed-option selected" data-value="250">1x</div>
+                  <div class="speed-option" data-value="115">2x</div>
+                  <div class="speed-option" data-value="45">5x</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <!-- Results Section (Hidden until simulation is run) -->
+
         <section id="results-section" class="glass-card hidden">
           <h2>Resultados de Simulación</h2>
 
@@ -211,8 +345,12 @@
             </div>
           </div>
         </section>
-      </main>
     </div>
+    <!-- Interactive Flow Tooltip -->
+    <div class="flow-tooltip" id="flow-tooltip"></div>
+
     <script src="/static/js/main.js"></script>
+    <script src="/static/js/flow_map.js"></script>
   </body>
 </html>
+

@@ -1,81 +1,81 @@
-# Guía Paso a Paso para Desplegar el Simulador en Render (Vía GitHub)
+# Simulador de Rutas Colombia Comparte
+### Modelo de Cadenas de Markov · Flask · Canvas 2D
 
-Este documento te guiará desde cero para publicar tu simulador en internet de manera gratuita usando **GitHub** y **Render**. No se asume conocimiento previo, así que sigue las instrucciones al pie de la letra.
-
----
-
-## PARTE 1: Subir tu código a GitHub
-
-GitHub es una plataforma donde guardarás tu código en la nube de forma segura.
-
-### 1. Crear tu cuenta (Si no tienes una)
-1. Ve a [github.com](https://github.com/) en tu navegador.
-2. Haz clic en **"Sign up"** en la esquina superior derecha.
-3. Sigue las instrucciones para crear una cuenta (necesitarás un correo electrónico y crear una contraseña).
-4. Verifica tu cuenta con el correo que te enviarán.
-
-### 2. Crear un nuevo "Repositorio" (Tu carpeta en la nube)
-1. Inicia sesión en GitHub.
-2. En la esquina superior derecha, haz clic en el botón con el signo **`+`** y selecciona **"New repository"**.
-3. Rellena los datos así:
-   - **Repository name**: Ponle un nombre sin espacios, por ejemplo: `simulador-rutas`
-   - **Description**: (Opcional) "Simulador de usuario con Cadenas de Markov"
-   - Marca la opción **"Public"** (Público).
-   - **NO** marques la casilla "Add a README file" (déjala vacía).
-4. Haz clic en el botón verde **"Create repository"**.
-
-### 3. Subir tus archivos directamente desde el navegador (La forma más fácil)
-1. En la pantalla que aparece tras crear el repositorio, busca un texto azul que dice **"uploading an existing file"** (debajo de *"...or create a new repository on the command line"*). Haz clic ahí.
-2. Verás una pantalla para arrastrar archivos.
-3. Abre la carpeta de tu proyecto en tu computadora (`c:\Users\TABORDA\Documents\PROGRAMAS 6\SIMULACION\Proyecto integrador`).
-4. Selecciona y arrastra al navegador **todos** estos archivos y carpetas:
-   - La carpeta `templates` (completa)
-   - La carpeta `static` (completa)
-   - El archivo `app.py`
-   - El archivo `requirements.txt`
-   - El archivo `.gitignore` (si está visible)
-   - *Nota: NO subas la carpeta `venv` ni `__pycache__`.*
-5. Espera a que la barra de progreso de todos los archivos llegue al final.
-6. Abajo, en "Commit changes", haz clic en el botón verde **"Commit changes"**. Espera unos segundos a que procese. 
-¡Felicidades! Tu código ya está en GitHub.
+Panel interactivo que combina **simulación numérica masiva** con una **visualización animada de flujos de usuarios** sobre un grafo de 34 estados, todo en un diseño dark premium.
 
 ---
 
-## PARTE 2: Desplegar en Render
+## 📁 Estructura del Proyecto
 
-Render es el servidor que tomará tu código desde GitHub y lo pondrá a funcionar como una página web pública.
+```
+TrabajoFinalSimulacion/
+│
+├── app.py                  # Servidor Flask: rutas, API y lógica de simulación Markov
+├── requirements.txt        # Dependencias Python (Flask, pandas, numpy, gunicorn)
+├── runtime.txt             # Versión de Python para despliegue en Render
+├── .gitignore              # Archivos excluidos del repositorio
+├── README.md               # Este archivo
+│
+├── notebooks/              # Cuadernos Jupyter de investigación y prototipado
+│   ├── Colombia_Comparte_v2.ipynb          # Versión visual animada (Canvas)
+│   └── Simulacion_de_Colombia_Comparte.ipynb  # Versión original análisis Markov
+│
+├── templates/
+│   └── index.html          # Plantilla principal de la app (HTML único)
+│
+└── static/
+    ├── css/
+    │   └── style.css       # Sistema de diseño dark premium completo
+    └── js/
+        ├── main.js         # Lógica del dashboard: tab switching, simulación masiva, tablas
+        └── flow_map.js     # Simulador visual interactivo: canvas, nodos, animaciones
+```
 
-### 1. Crear cuenta en Render conectada a GitHub
-1. Ve a [render.com](https://render.com/) en otra pestaña.
-2. Haz clic en **"Get Started"** (arriba a la derecha).
-3. Selecciona la opción **"GitHub"** (botón negro). 
-4. Autoriza a Render para que pueda leer tus repositorios de GitHub siguiendo las ventanas emergentes que aparezcan.
+---
 
-### 2. Crear el Servicio Web
-1. Una vez dentro de Render, verás un panel de control (Dashboard).
-2. Haz clic en el botón **"New +"** (arriba a la derecha) y selecciona **"Web Service"**.
-3. En la siguiente pantalla, elige **"Build and deploy from a Git repository"** y dale a "Next".
-4. Verás una lista con tus repositorios. Busca el que creaste (`simulador-rutas`) y haz clic en **"Connect"** a la derecha.
+## 🚀 Cómo ejecutar localmente
 
-### 3. Configurar el Despliegue (¡Muy Importante!)
-Aparecerá un formulario largo. Llena estrictamente esta información:
+```bash
+# 1. Instalar dependencias
+pip install -r requirements.txt
 
-- **Name**: El nombre público de tu web (ej. `simulador-colombia-comparte`). Esto definirá la URL de tu página.
-- **Region**: Deja la que esté por defecto (generalmente Oregon o Frankfurt).
-- **Branch**: Déjalo en `main` (o `master`).
-- **Runtime**: Render debería detectar automáticamente que es Python. Déjalo en **Python 3**.
-- **Build Command**: Aquí Render debe instalar tus dependencias. Escribe o asegúrate de que diga exactamente esto:
-  `pip install -r requirements.txt`
-- **Start Command**: Aquí le decimos cómo arrancar la aplicación. Escribe exactamente esto:
-  `gunicorn app:app`
-- **Instance Type**: Asegúrate de que esté seleccionada la opción **"Free"** ($0/month).
+# 2. Iniciar el servidor
+python app.py
 
-### 4. ¡A Desplegar!
-1. Ve hasta abajo y haz clic en el botón **"Create Web Service"**.
-2. Verás una pantalla negra simulando una terminal (logs) que empezará a moverse. Render está descargando y configurando tu servidor de forma automática.
-3. Este proceso tomará entre 2 y 5 minutos.
-4. Cuando termine, verás un mensaje verde que dice **"Live"** o "Your service is live 🎉".
-5. Arriba a la izquierda, debajo del nombre de tu proyecto, verás una URL (por ejemplo: `https://simulador-colombia-comparte.onrender.com`).
-6. **¡Haz clic en esa URL y disfruta de tu simulador en internet!**
+# 3. Abrir en el navegador
+# http://127.0.0.1:5000/
+```
 
-*Recuerda:* Al usar la versión gratuita, si la página pasa 15 minutos sin que nadie entre, se "dormirá". Cuando vuelvas a entrar, la pantalla se quedará cargando unos 40 segundos mientras el servidor despierta, y luego volverá a la normalidad.
+---
+
+## 🧩 Módulos del Sistema
+
+### `app.py`
+- Define los **34 estados** del recorrido de usuario en Colombia Comparte
+- Calcula la **matriz de conteos** y la **matriz de probabilidades de transición**
+- Expone dos endpoints REST:
+  - `GET /api/data` — devuelve estados, recorridos base y matrices
+  - `POST /api/simulate` — ejecuta simulación masiva de N usuarios
+
+### `static/js/main.js`
+- Sistema de **navegación por pestañas** del sidebar
+- Renderizado de tablas de estados, recorridos y matrices
+- Ejecución de simulación masiva y visualización de resultados con Chart.js
+
+### `static/js/flow_map.js`
+- Renderizado del **canvas interactivo** con los 34 nodos conectados
+- Animación **paso a paso** de recorridos usando las probabilidades Markov
+- Simulaciones individuales y en lote con KPIs en tiempo real
+- Tooltip interactivo sobre cada nodo con estadísticas acumuladas
+
+---
+
+## 🌐 Despliegue en Render
+
+Ver las instrucciones detalladas al final del archivo `README.md` original o seguir estos pasos rápidos:
+1. Subir el repositorio a GitHub (sin la carpeta `notebooks/` si se prefiere)
+2. Conectar el repositorio en [render.com](https://render.com/)
+3. Configurar:
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `gunicorn app:app`
+   - **Instance Type:** Free

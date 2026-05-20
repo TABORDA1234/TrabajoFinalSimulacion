@@ -9,6 +9,55 @@ document.addEventListener('DOMContentLoaded', () => {
     const matCountsTable = document.getElementById('table-mat-counts');
     const matProbTable = document.getElementById('table-mat-prob');
     
+    // ── SIDEBAR TAB SWITCHING SYSTEM ──
+    const sections = [
+        '#config-section',
+        '#states-section',
+        '#paths-section',
+        '#matrix-section',
+        '#results-section',
+        '#flow-simulator-section'
+    ];
+
+    function showSection(targetId) {
+        sections.forEach(selector => {
+            const el = document.querySelector(selector);
+            if (el) {
+                if (selector === targetId) {
+                    el.classList.remove('hidden');
+                } else {
+                    el.classList.add('hidden');
+                }
+            }
+        });
+
+        // Highlight the correct sidebar link
+        document.querySelectorAll('.sidebar nav a').forEach(link => {
+            if (link.getAttribute('href') === targetId) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+
+        // Crucial: trigger window resize if it's the canvas simulator to recalculate layout
+        if (targetId === '#flow-simulator-section') {
+            window.dispatchEvent(new Event('resize'));
+        }
+    }
+
+    // Initialize: hide everything except #config-section
+    showSection('#config-section');
+
+    // Sidebar click listeners
+    document.querySelectorAll('.sidebar nav a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = e.currentTarget.getAttribute('href');
+            showSection(targetId);
+        });
+    });
+
     // Fetch initial data
     fetch('/api/data')
         .then(res => res.json())
@@ -65,8 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector('#paths-section h2').innerText = `Recorridos Simulados (${results.simulated_paths.length} únicos)`;
             }
             
-            // smooth scroll to results
-            document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
+            // Switch to the results section tab
+            showSection('#results-section');
         })
         .finally(() => {
             btn.innerHTML = originalText;
