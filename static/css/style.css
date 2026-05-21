@@ -607,7 +607,130 @@ table tbody tr:hover {
     .content { margin-left: 0; width: 100%; padding: 16px; }
     .config-form { flex-direction: column; align-items: stretch; }
     .primary-btn { width: 100%; }
-    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    
+    /* Compact metrics grid on mobile */
+    .metrics-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+    
+    .metric-card {
+        padding: 10px 12px;
+        border-radius: 10px;
+    }
+    .metric-card h3 {
+        font-size: 10px;
+        margin-bottom: 4px;
+        letter-spacing: 0.04em;
+    }
+    .metric-card .value {
+        font-size: 20px;
+    }
+
+    /* ─── MOBILE FLOW SIMULATOR RE-ORDERING ─── */
+    #flow-simulator-section {
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+    }
+    
+    #flow-simulator-section h2 {
+        order: 1;
+        margin-bottom: 12px;
+        font-size: 16px;
+    }
+    
+    #flow-simulator-section .metrics-grid {
+        order: 2;
+        margin-bottom: 12px;
+    }
+    
+    #flow-simulator-section .flow-controls-bar {
+        order: 3;
+        margin-bottom: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: rgba(10, 10, 20, 0.9);
+    }
+    
+    .flow-controls-bar .sim-btn {
+        padding: 8px 10px;
+        font-size: 11px;
+        font-weight: 700;
+        justify-content: center;
+    }
+    
+    #live-btn-go {
+        flex: 1 1 calc(50% - 4px);
+        order: 1;
+    }
+    
+    #live-btn-batch {
+        flex: 1 1 calc(50% - 4px);
+        order: 2;
+    }
+    
+    #live-btn-reset {
+        flex: 1 1 calc(35% - 4px);
+        order: 3;
+        padding: 8px 6px;
+    }
+    
+    .sim-speed-selector {
+        flex: 1 1 calc(65% - 4px);
+        order: 4;
+        margin-left: 0;
+        justify-content: flex-end;
+        gap: 6px;
+    }
+    
+    .speed-dropdown-btn {
+        padding: 6px 10px;
+        font-size: 11px;
+        min-width: 60px;
+    }
+    
+    #flow-simulator-section .flow-simulator-grid {
+        order: 4;
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .canvas-container {
+        min-height: 380px !important;
+        height: 380px !important;
+    }
+    
+    .flow-card-header {
+        padding: 10px 12px;
+    }
+    
+    .flow-card-header h3 {
+        font-size: 10px;
+    }
+    
+    .flow-legend {
+        gap: 6px;
+    }
+    
+    .legend-item {
+        font-size: 9px;
+        gap: 4px;
+    }
+    
+    .legend-dot {
+        width: 6px;
+        height: 6px;
+    }
+    
+    .sim-status-bar {
+        padding: 8px 12px;
+        font-size: 10px;
+    }
 }
 
 @media (max-width: 480px) {
